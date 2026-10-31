@@ -1,1 +1,545 @@
-<h1>The Last Fare</h1>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>The Last Fare</title>
+<style>
+:root{
+  --bg:#07090d; --bg2:#0c1017; --ink:#e8e4d8; --mut:#9aa3ad;
+  --neon:#ffb347; --neon2:#57c8ff; --line:rgba(255,255,255,.12);
+  --card:#10151d;
+}
+*{box-sizing:border-box; -webkit-tap-highlight-color:transparent;}
+html,body{margin:0;padding:0;}
+body{
+  background:var(--bg); color:var(--ink);
+  font-family:Georgia,'Times New Roman',serif;
+  min-height:100dvh; display:flex; flex-direction:column; align-items:center;
+  padding:0 0 48px;
+}
+/* rain streaks, CSS only */
+.rainfx{position:fixed; inset:0; pointer-events:none; z-index:0; opacity:.5;
+  background:repeating-linear-gradient(102deg, rgba(174,194,224,.10) 0 1px, transparent 1px 14px);
+  background-size:140px 140px; animation:rainFall 1.1s linear infinite;}
+@keyframes rainFall{from{background-position:0 -140px;}to{background-position:0 0;}}
+@media (prefers-reduced-motion: reduce){ .rainfx{animation:none;} }
+.wrap{position:relative; z-index:1; width:100%; max-width:560px; padding:20px 18px 0;}
+.mast{font-size:13px; letter-spacing:.35em; text-transform:uppercase; color:var(--mut); text-align:center; margin:6px 0 2px;}
+h1.title{font-size:44px; margin:2px 0 4px; text-align:center; letter-spacing:.04em; color:var(--ink);
+  text-shadow:0 0 24px rgba(255,179,71,.25);}
+.sub{text-align:center; color:var(--mut); font-style:italic; margin:0 0 18px; font-size:16px;}
+.card{background:var(--card); border:1px solid var(--line); border-radius:14px; padding:18px; margin:12px 0;
+  box-shadow:0 8px 30px rgba(0,0,0,.5);}
+.pickup{font-family:system-ui,sans-serif; font-size:12px; letter-spacing:.18em; text-transform:uppercase; color:var(--neon2); margin:0 0 6px;}
+.passname{font-size:30px; margin:0 0 4px;}
+.hook{color:var(--mut); font-style:italic; margin:0 0 4px; font-size:15px;}
+p.body{font-size:17px; line-height:1.65; margin:12px 0;}
+button{display:block; width:100%; text-align:left; font-family:Georgia,serif; font-size:17px;
+  background:#151c26; color:var(--ink); border:1px solid var(--line); border-radius:12px;
+  padding:15px 16px; margin:10px 0; min-height:48px; cursor:pointer;}
+button:active{background:#1c2532;}
+button.choice{border-left:4px solid var(--neon);}
+button.primary{background:var(--neon); color:#1a1206; font-weight:bold; text-align:center; border:none;}
+button.ghost{background:transparent; text-align:center; color:var(--mut);}
+.row{display:flex; gap:10px;}
+.row button{flex:1; text-align:center;}
+.tip{font-family:system-ui,sans-serif; color:var(--neon); font-size:15px; letter-spacing:.06em;}
+.endtitle{font-size:26px; margin:0 0 6px; color:var(--neon);}
+.gallery-item{border-top:1px solid var(--line); padding:12px 0;}
+.gallery-item h3{margin:0 0 4px; font-size:19px;}
+.locked{color:var(--mut); font-style:italic;}
+.unlocked{color:var(--ink);}
+.count{font-family:system-ui,sans-serif; font-size:12px; color:var(--mut); letter-spacing:.1em;}
+.kv{display:flex; justify-content:space-between; font-family:system-ui,sans-serif; font-size:15px; padding:6px 0; border-bottom:1px dashed var(--line);}
+.small{font-size:13px; color:var(--mut); text-align:center; margin-top:18px; font-family:system-ui,sans-serif;}
+.hidden{display:none !important;}
+.neon-sign{text-align:center; font-size:12px; letter-spacing:.4em; color:var(--neon); text-transform:uppercase; margin:10px 0; font-family:system-ui,sans-serif;}
+</style>
+</head>
+<body>
+<div class="rainfx" aria-hidden="true"></div>
+<div class="wrap">
+
+  <section id="scr-title">
+    <p class="mast">Night shift</p>
+    <h1 class="title">The Last Fare</h1>
+    <p class="sub">Five passengers. One rainy city. Drive.</p>
+    <div class="card">
+      <div class="kv"><span>Total earned</span><span id="t-earned">$0</span></div>
+      <div class="kv"><span>Nights driven</span><span id="t-nights">0</span></div>
+      <div class="kv"><span>Endings found</span><span id="t-endings">0 / 15</span></div>
+    </div>
+    <button class="primary" id="btn-clockin">CLOCK IN</button>
+    <button class="ghost" id="btn-gallery">Endings gallery</button>
+    <button class="ghost" id="btn-sound">Sound: on</button>
+    <p class="small">A story game. No timers, no fail state. Just drive.</p>
+  </section>
+
+  <section id="scr-intro" class="hidden">
+    <p class="mast" id="i-fareno">Fare 1 of 3</p>
+    <div class="card">
+      <p class="pickup" id="i-pickup"></p>
+      <h2 class="passname" id="i-name"></h2>
+      <p class="hook" id="i-hook"></p>
+    </div>
+    <button class="primary" id="btn-startfare">PICK UP</button>
+  </section>
+
+  <section id="scr-scene" class="hidden">
+    <p class="mast" id="s-pass">Passenger</p>
+    <div class="card"><p class="body" id="s-text"></p></div>
+    <div id="s-choices"></div>
+  </section>
+
+  <section id="scr-ending" class="hidden">
+    <p class="mast">Fare complete</p>
+    <div class="card">
+      <h2 class="endtitle" id="e-title"></h2>
+      <p class="body" id="e-text"></p>
+      <p class="tip" id="e-tip"></p>
+    </div>
+    <button class="primary" id="btn-nextfare">NEXT FARE</button>
+  </section>
+
+  <section id="scr-summary" class="hidden">
+    <p class="mast">Night complete</p>
+    <h1 class="title" style="font-size:32px;">Clock Out</h1>
+    <div class="card">
+      <div class="kv"><span>Fares tonight</span><span id="n-fares">3</span></div>
+      <div class="kv"><span>Tips tonight</span><span id="n-tips">$0</span></div>
+      <div class="kv"><span>New endings tonight</span><span id="n-new">0</span></div>
+      <div class="kv"><span>Total earned</span><span id="n-total">$0</span></div>
+    </div>
+    <button class="primary" id="btn-another">DRIVE ANOTHER NIGHT</button>
+    <button class="ghost" id="btn-clockout">Clock out</button>
+  </section>
+
+  <section id="scr-gallery" class="hidden">
+    <p class="mast">Endings gallery</p>
+    <h1 class="title" style="font-size:32px;">Endings</h1>
+    <div id="g-list"></div>
+    <button class="ghost" id="btn-gback">Back</button>
+  </section>
+
+</div>
+<script>
+'use strict';
+/* ============ persistence ============ */
+var store = (function(){
+  function get(k, d){ try{ var v = localStorage.getItem(k); return v === null ? d : JSON.parse(v); }catch(e){ return d; } }
+  function set(k, v){ try{ localStorage.setItem(k, JSON.stringify(v)); }catch(e){} }
+  return {
+    fares: function(){ return get('tlf-fares', 0); },
+    nights: function(){ return get('tlf-nights', 0); },
+    earned: function(){ return get('tlf-earned', 0); },
+    endings: function(){ return get('tlf-endings', {}); },
+    sound: function(){ return get('tlf-sound', true); },
+    addFare: function(){ set('tlf-fares', this.fares() + 1); },
+    addNight: function(){ set('tlf-nights', this.nights() + 1); },
+    addEarned: function(n){ set('tlf-earned', this.earned() + n); },
+    unlockEnding: function(pid, eid){
+      var e = this.endings();
+      if(!e[pid]) e[pid] = [];
+      var isNew = e[pid].indexOf(eid) === -1;
+      if(isNew){ e[pid].push(eid); set('tlf-endings', e); }
+      return isNew;
+    },
+    setSound: function(on){ set('tlf-sound', on); }
+  };
+})();
+
+/* ============ audio: rain, traffic, soft pad. all synthesized ============ */
+var audio = (function(){
+  var ctx = null, master = null, started = false;
+  function ensure(){
+    if(ctx) return true;
+    try{
+      ctx = new (window.AudioContext || window.webkitAudioContext)();
+      master = ctx.createGain(); master.gain.value = 0.5; master.connect(ctx.destination);
+    }catch(e){ return false; }
+    return true;
+  }
+  function noiseBuffer(){
+    var len = ctx.sampleRate * 2, buf = ctx.createBuffer(1, len, ctx.sampleRate), d = buf.getChannelData(0);
+    for(var i = 0; i < len; i++) d[i] = Math.random() * 2 - 1;
+    return buf;
+  }
+  function start(){
+    if(started || !store.sound()) return;
+    if(!ensure()) return;
+    started = true;
+    /* rain: looped noise through lowpass */
+    var rain = ctx.createBufferSource(); rain.buffer = noiseBuffer(); rain.loop = true;
+    var rf = ctx.createBiquadFilter(); rf.type = 'lowpass'; rf.frequency.value = 1400;
+    var rg = ctx.createGain(); rg.gain.value = 0.05;
+    rain.connect(rf); rf.connect(rg); rg.connect(master); rain.start();
+    /* distant traffic: low sine with slow swell */
+    var tr = ctx.createOscillator(); tr.type = 'sine'; tr.frequency.value = 55;
+    var tg = ctx.createGain(); tg.gain.value = 0.02;
+    var lfo = ctx.createOscillator(); lfo.frequency.value = 0.07;
+    var lg = ctx.createGain(); lg.gain.value = 0.012;
+    lfo.connect(lg); lg.connect(tg.gain);
+    tr.connect(tg); tg.connect(master); tr.start(); lfo.start();
+    /* soft pad: a minor9 chord, very quiet, every 16 seconds */
+    var notes = [110, 130.81, 164.81, 196, 246.94];
+    function pad(){
+      if(!started) return;
+      var t = ctx.currentTime;
+      notes.forEach(function(f, i){
+        var o = ctx.createOscillator(); o.type = 'triangle'; o.frequency.value = f;
+        var g = ctx.createGain();
+        g.gain.setValueAtTime(0.0001, t);
+        g.gain.linearRampToValueAtTime(0.016, t + 2 + i * 0.4);
+        g.gain.linearRampToValueAtTime(0.0001, t + 12);
+        o.connect(g); g.connect(master); o.start(t); o.stop(t + 13);
+      });
+      setTimeout(pad, 16000);
+    }
+    pad();
+  }
+  function stop(){ started = false; if(ctx){ ctx.close(); ctx = null; } }
+  return { start: start, stop: stop,
+    toggle: function(){
+      var on = !store.sound();
+      store.setSound(on);
+      if(on){ start(); } else { stop(); }
+      return on;
+    } };
+})();
+/* ============ story data ============
+   scenes: id -> {text, choices:[{t, to}]}. `to` is a scene id or "end:<endingId>".
+   endings: id -> {title, text, tip}. */
+var STORY = [
+{
+  id:'vera', name:'Vera', pickup:'The Marlowe Hotel, 2:14 AM',
+  hook:'A singer who walked off stage in the middle of the last song.',
+  start:'s1',
+  scenes:{
+    s1:{ text:"She slides into the back seat still wearing the stage makeup, silver dress catching the streetlight. Her own song is on the radio. She leans forward and switches it off. 'Drive,' she says. 'Anywhere that is not that room.'",
+      choices:[
+        {t:"'Why did you walk off?'", to:'s2a'},
+        {t:"'Rough night?'", to:'s2b'},
+        {t:"Say nothing and drive.", to:'s2c'} ]},
+    s2a:{ text:"'Because the last song is a lie,' she says. 'I wrote it about a man who never existed, for a crowd that never listened. Tonight I got to the second verse and I could not make my mouth do it.' She watches the city slide past. 'Ten years of lying for a living. You ever get tired of your job, driver?'",
+      choices:[
+        {t:"'Sing it for yourself for once.'", to:'s3a'},
+        {t:"'The crowd paid for the song, not the truth.'", to:'s3b'} ]},
+    s2b:{ text:"'Rough decade,' she says, and almost smiles. 'They wanted the last song. It is the one everybody knows. I stood there with the microphone in my hand and realized I would rather be anywhere else. So I left. Middle of the verse. The band kept playing for a full minute before they understood.'",
+      choices:[
+        {t:"'Where to, then?'", to:'s3c'},
+        {t:"'You will go back tomorrow.'", to:'s3a'} ]},
+    s2c:{ text:"You drive. Three blocks pass in silence. Then, quiet from the back seat: 'You want to know why I left? Nobody ever asks the driver anything. That is why I am telling you.' She laughs once, short. 'The last song is a lie. I wrote it about nobody, for everybody. Tonight my mouth refused.'",
+      choices:[
+        {t:"'Then stop singing it.'", to:'s3b'},
+        {t:"'One more night will not kill you.'", to:'s3a'} ]},
+    s3a:{ text:"She is quiet for a long time. Then: 'Turn around.' You look in the mirror. 'Turn the car around, driver. If I go back right now, I can still catch the encore. I will sing it wrong on purpose. For myself.' Her eyes are bright. 'Or take me to the river and I will never sing again. Your call. You are driving.'",
+      choices:[
+        {t:"Turn around. Take her back.", to:'end:e_encore'},
+        {t:"Keep driving to the river.", to:'end:e_river'} ]},
+    s3b:{ text:"'Maybe,' she says. 'Or maybe ten years of the lie is enough truth for one lifetime.' She pulls a cassette from her bag and turns it over in her hands. 'This is the real version. Nobody has ever heard it. The label said it would not sell.'",
+      choices:[
+        {t:"'Then let us hear it somewhere real.'", to:'end:e_piano'},
+        {t:"'Keep it. Some songs are just yours.'", to:'end:e_river'} ]},
+    s3c:{ text:"'Nowhere is a place,' she says. 'Nowhere is the only place I have not sung.' She gives you an address across the river, a street you know is mostly warehouses. 'A friend has a piano there. No crowd. No microphones. Just the song the way I wrote it before they fixed it.'",
+      choices:[
+        {t:"Drive her to the piano.", to:'end:e_piano'},
+        {t:"'The club pays better than the warehouse.'", to:'end:e_encore'} ]}
+  },
+  endings:{
+    e_encore:{ title:"Encore", tip:40,
+      text:"You turn the car around and run two red lights getting back to the Marlowe. She is out of the car before it stops moving, silver dress flashing under the marquee. From the street you hear the crowd roar, then a piano, then her voice doing the last song wrong on purpose and better than ever." },
+    e_river:{ title:"The Long Way", tip:25,
+      text:"You drive the river road with the windows down. Halfway across the bridge she starts humming, low and true, a melody you have never heard. It is the real version. She does not sing the words. Some things you keep. The meter runs. Neither of you minds." },
+    e_piano:{ title:"No Microphones", tip:20,
+      text:"The warehouse smells of oil and rain. The piano is missing two keys and she plays around them like they were never there. You stand in the doorway and listen to the song the way it was written. It is better. Everything true is better. She does not charge admission." }
+  }
+},
+{
+  id:'hale', name:'Hale', pickup:'Outside the 9th Precinct, 1:02 AM',
+  hook:'A private eye who wants you to follow a black sedan.',
+  start:'s1',
+  scenes:{
+    s1:{ text:"He gets in front, not back, and does not look at you. 'Black sedan, two cars ahead. Follow it. Do not get made.' A private license peeks from his coat. 'Fifty bucks if we do not lose it. A hundred if we do not get seen.'",
+      choices:[
+        {t:"'I am in. Fifty.'", to:'s2a'},
+        {t:"'I do not do tails.'", to:'s2b'},
+        {t:"'Who is in the sedan?'", to:'s2c'} ]},
+    s2a:{ text:"You pull out smooth, three car lengths back. He watches the sedan like it owes him money. 'Wife thinks the husband is stepping out,' he says. 'Husband thinks the wife hired me. They are both right and they are both wrong. That is the job.' The sedan turns toward the docks.",
+      choices:[
+        {t:"'Docks at this hour. Nothing good.'", to:'s3a'},
+        {t:"'Maybe they are both just lonely.'", to:'s3b'} ]},
+    s2b:{ text:"'Everybody does tails,' he says. 'You just do not know it yet.' He puts a hundred on the dash. 'Look. I am not asking you to break the law. I am asking you to drive behind a car. You are a cab driver. It is literally the job description.'",
+      choices:[
+        {t:"Take the hundred. Follow.", to:'s2a'},
+        {t:"'Not for a hundred. For two.'", to:'s2a'} ]},
+    s2c:{ text:"'Does it matter?' He lights a cigarette despite the sign. 'A man who pays his bills and kisses his wife at the door. Except Thursdays, when he drives to the docks and sits in his car for an hour staring at the water. The wife wants to know why. So do I, now.'",
+      choices:[
+        {t:"Follow the sedan.", to:'s2a'},
+        {t:"'Maybe the water is the whole story.'", to:'s3b'} ]},
+    s3a:{ text:"The sedan parks at the end of pier 9. A man gets out, walks to the railing, and stands there. No meeting. No blonde. Just a man and the black water. Hale lowers his binoculars. 'Huh,' he says, and you can hear ten years of cynicism crack. 'He is not meeting anyone. He just comes here to be alone.'",
+      choices:[
+        {t:"'Tell the wife the truth.'", to:'end:e_truth'},
+        {t:"'Tell her whatever she paid to hear.'", to:'end:e_lie'} ]},
+    s3b:{ text:"'Lonely is a word for it,' Hale says. The sedan is slowing at the pier. 'I used to think everybody had a secret worth finding. Lately I think most people are just looking for a quiet place to sit.' He puts the binoculars down without raising them. 'Keep driving. Past the pier. I do not need to see this.'",
+      choices:[
+        {t:"Drive past.", to:'end:e_mercy'},
+        {t:"'You sure? She paid for answers.'", to:'end:e_truth'} ]}
+  },
+  endings:{
+    e_truth:{ title:"The Truth", tip:60,
+      text:"You wait while Hale makes the call. 'Mrs. Darrow? It is Hale. Your husband is not seeing anyone. He drives to the docks on Thursdays and watches the water.' A long silence. 'Thank you,' she says, and means it. Hale hangs up and stares at the pier. 'First honest report I have filed in a year.'" },
+    e_lie:{ title:"The Story", tip:100,
+      text:"Hale invents a blonde, a motel, a time. The wife cries and pays double. On the drive back he does not speak. At your next red light he gets out without a word and walks into the rain. The hundred on the dash feels heavier than money should." },
+    e_mercy:{ title:"Mercy", tip:100,
+      text:"You drive past the pier without slowing. In the mirror the man at the railing gets smaller and smaller. 'Some fares you do not complete,' Hale says. He pays the hundred anyway. 'For the ride,' he says. 'And for not asking.'" }
+  }
+},
+{
+  id:'eddie', name:'Eddie', pickup:'The bus depot, 3:40 AM',
+  hook:'A kid with a duffel bag that is too heavy for clothes.',
+  start:'s1',
+  scenes:{
+    s1:{ text:"He cannot be twenty. The duffel bag thumps against the door as he gets in, heavy in a way clothes never are. 'Drive,' he says. 'Just drive north. I will tell you when.' His hands will not stop moving.",
+      choices:[
+        {t:"'What is in the bag, kid?'", to:'s2a'},
+        {t:"'North it is. No questions.'", to:'s2b'},
+        {t:"'I am not driving anywhere until you answer.'", to:'s2c'} ]},
+    s2a:{ text:"'Money,' he says, too fast. Then, slower: 'It is my grandmother's. She kept it in the house. Cash. The house is not hers anymore. The bank took it. I got there before the locks changed.' He is crying now, quiet. 'I did not steal it. It is family money. I just need to get it somewhere safe.'",
+      choices:[
+        {t:"'Banks keep records, kid. So do I.'", to:'s3a'},
+        {t:"'Then let us get it somewhere safe.'", to:'s3b'} ]},
+    s2b:{ text:"You drive north. The city thins out. He starts talking without being asked, the way scared kids do. Grandmother. The house. The bank. The locks. By the county line you have heard the whole story twice. 'You believe me?' he asks. The bag sits between his feet like a dog.",
+      choices:[
+        {t:"'I believe you.'", to:'s3b'},
+        {t:"'It does not matter what I believe.'", to:'s3a'} ]},
+    s2c:{ text:"He stares at you. For a second you think he will run. Then the whole story comes out in a rush: the grandmother, the house, the bank, the cash in the walls. 'I did not steal it,' he says. 'It is ours. I just panicked.' The bag sags against the seat.",
+      choices:[
+        {t:"'Cops or your aunt. Pick one.'", to:'s3a'},
+        {t:"'Where is somewhere safe?'", to:'s3b'} ]},
+    s3a:{ text:"'There is an aunt in Fairview,' he says. 'She would hold it. She would not ask.' You take the highway north. He sleeps with his head against the window, eighteen years old and exhausted. Fairview glows on the horizon, one porch light at a time.",
+      choices:[
+        {t:"Drive to Fairview.", to:'end:e_aunt'} ]},
+    s3b:{ text:"'There is a storage place on Route 9,' he says. 'Anonymous. Cash. I can come back for it when...' He does not finish. When what? When he is older. When it is safe. When the world makes sense. You pull into the lot. The night clerk does not look up.",
+      choices:[
+        {t:"'Lock it up and walk away clean.'", to:'end:e_storage'},
+        {t:"'Sleep on it first. The motel is on me.'", to:'end:e_motel'} ]}
+  },
+  endings:{
+    e_aunt:{ title:"The Aunt", tip:35,
+      text:"Fairview is an hour north. He sleeps against the window, the bag clutched like a pillow. The aunt answers in a robe, takes in the whole situation in one glance, and pulls him inside. She mouths thank you through the screen door. On the drive back the cab feels lighter, though nothing in it changed." },
+    e_storage:{ title:"Unit 9", tip:50,
+      text:"The clerk does not look up. The roll-up door rattles down on the bag and the story and the grandmother's house. Eddie stands in the lot, suddenly small without the weight. 'Thanks,' he says. 'For not asking. For asking.' You drive him to the bus station. He will be back for it. Probably." },
+    e_motel:{ title:"One Night", tip:15,
+      text:"You pay for the motel room in cash and tell him to sleep. 'The bag stays with you,' you say. 'The world can wait till morning.' He nods, already half asleep standing up. In the morning he will decide. Tonight he is just a kid with somewhere to be." }
+  }
+},
+{
+  id:'rosa', name:'Rosa', pickup:'A brownstone on Alder Street, 3:55 AM',
+  hook:'A widow going to the cemetery on the anniversary, hours before visiting hours.',
+  start:'s1',
+  scenes:{
+    s1:{ text:"She is seventy if she is a day, in a black coat with a paper bag on her lap. 'Greenwood Cemetery,' she says. 'The north gate.' It is 3:55 in the morning. 'I know it is closed,' she says before you can speak. 'I know. Drive anyway.'",
+      choices:[
+        {t:"'The gate will be locked, Rosa.'", to:'s2a'},
+        {t:"'Who are we visiting?'", to:'s2b'},
+        {t:"Drive.", to:'s2c'} ]},
+    s2a:{ text:"'Then we will sit outside it,' she says. 'Forty-one years I have gone on this day. Rain, snow, the year of the big strike I walked. The gate being locked never stopped me before.' The paper bag rustles. 'I brought his favorite. Coffee, black. I still make two.'",
+      choices:[
+        {t:"'I will wait with the car running.'", to:'s3a'},
+        {t:"'Tell me about him.'", to:'s3b'} ]},
+    s2b:{ text:"'My Henry,' she says. 'Forty-one years married, eleven years gone. He drove a cab, you know. Thirty years. Said the night shift was the only honest shift.' She smiles at you in the mirror. 'You remind me of him. Same eyes on the road.'",
+      choices:[
+        {t:"'What would Henry do about the gate?'", to:'s3a'},
+        {t:"'Then you know the meter is running.'", to:'s3c'} ]},
+    s2c:{ text:"You drive. The streets are empty enough to hear the tires. After a while she says, 'He drove a cab for thirty years, my Henry. Night shift. He said the city tells the truth after midnight.' She pats the paper bag. 'Coffee, black. I still make two. Forty-one years and I still make two.'",
+      choices:[
+        {t:"'Henry sounds like he knew things.'", to:'s3b'},
+        {t:"'We will figure out the gate.'", to:'s3a'} ]},
+    s3a:{ text:"The north gate is locked, chained, padlocked, the way she knew it would be. You park under the elm and kill the engine. She pours the coffee into two paper cups and sets his on the dashboard. You drink yours looking at the dark rows of stones. Neither of you speaks. It is the best fare of the night.",
+      choices:[
+        {t:"Wait until she is ready.", to:'end:e_vigil'} ]},
+    s3b:{ text:"'He said the night shift was the only honest shift,' she tells you, 'because at night people stop performing.' She talks the whole way: the wedding, the bad years, the good ones, the laugh. By the cemetery you feel like you knew him. 'He would have liked you,' she says. 'You listen like a driver.'",
+      choices:[
+        {t:"'I will walk you to the gate.'", to:'end:e_company'},
+        {t:"'Same time next year, Rosa.'", to:'end:e_vigil'} ]},
+    s3c:{ text:"She laughs, a real one. 'Henry said the same thing to every passenger who talked too much.' She counts out the fare plus a tip before you have even arrived, and tucks an extra five into the visor 'for the next sad case.' 'Do not argue,' she says. 'I am old. It is my turn to overpay.'",
+      choices:[
+        {t:"Drive on to Greenwood.", to:'end:e_paid'} ]}
+  },
+  endings:{
+    e_vigil:{ title:"The Vigil", tip:20,
+      text:"Dawn comes gray over the stones. She finishes her coffee and his, folds the bag neatly, and nods once. 'Same time next year,' she says. You would wait at the gate at 3 AM for this woman for the rest of your life." },
+    e_company:{ title:"Company", tip:25,
+      text:"You walk her to the gate and she holds your arm over the uneven ground. 'Henry walked me everywhere,' she says. 'Even to the mailbox.' At the gate she kisses your cheek. 'Tell your wife a widow says you are a good man.' You are not married. You do not correct her." },
+    e_paid:{ title:"Fare Paid", tip:31,
+      text:"She overpays by eleven dollars and calls it a senior discount in reverse. 'Henry drove thirty years,' she says at the curb. 'He always said: the fare is the fare, but the company is the tip.' You watch her walk to the locked gate, straight-backed, paper bag in hand." }
+  }
+},
+{
+  id:'ash', name:'Dr. Ash', pickup:'The university gates, 12:47 AM',
+  hook:'A man with a notebook he says people would kill for.',
+  start:'s1',
+  scenes:{
+    s1:{ text:"He gets in with a leather satchel clutched to his chest and checks the back window twice. 'Drive. Anywhere. Keep moving.' He is sixty, wild-haired, eyes bright. 'Do you know what cold fusion is, driver? No? Good. Forget I said it. Forget everything I say tonight.'",
+      choices:[
+        {t:"'Who is following you?'", to:'s2a'},
+        {t:"'Slow down, professor.'", to:'s2b'},
+        {t:"'Cold fusion. Sure. And I am the mayor.'", to:'s2c'} ]},
+    s2a:{ text:"'The university. The energy companies. A man in a gray coat who has been behind me since Tuesday.' He opens the satchel a crack: a notebook, dense with math. 'Thirty years of work. It works, driver. On paper it works. And now everyone wants to own it or bury it.'",
+      choices:[
+        {t:"'Then we keep moving.'", to:'s3a'},
+        {t:"'Maybe the gray coat is just a coat.'", to:'s3b'} ]},
+    s2b:{ text:"He breathes. 'Sorry. Sorry. It has been a week.' He smooths the satchel. 'I am Dr. Ash. Physics. Thirty years on one problem. Last month the math closed. Do you understand what that means? Clean energy. Forever. And my first thought was not joy, driver. It was fear.'",
+      choices:[
+        {t:"'Fear of what?'", to:'s2a'},
+        {t:"'Publish it. Today. Then nobody can bury it.'", to:'s3c'} ]},
+    s2c:{ text:"He laughs, startled and genuine. 'The mayor! Good. I like you.' The laugh fades. 'Everyone thinks I am mad. My department chair suggested a rest. But the math, driver. The math does not care what they think.' He taps the satchel. 'It is all in here.'",
+      choices:[
+        {t:"'Show me the math.'", to:'s3b'},
+        {t:"'Mad or not, you are paying the fare.'", to:'s3a'} ]},
+    s3a:{ text:"You drive. He watches the mirrors the whole way, narrating gray coats that may or may not be there. At the fifth red light he goes quiet. 'You know what the sad part is?' he says. 'If I am right, it does not matter. If I am wrong, it does not matter. Either way I am just a man in a cab at 1 AM.'",
+      choices:[
+        {t:"'Where to, professor? Somewhere safe.'", to:'end:e_drop'},
+        {t:"'The math matters. Do not let them have it.'", to:'end:e_notebook'} ]},
+    s3b:{ text:"He opens the notebook. Pages of symbols march in tight rows, and for a minute you almost see it, the shape of the idea, clean as a chord. Then a bus passes and the spell breaks. 'You see?' he says eagerly. 'It is beautiful, is it not?' It is. Or you want it to be. At 1 AM the line is thin.",
+      choices:[
+        {t:"'It is beautiful. Keep it safe.'", to:'end:e_notebook'},
+        {t:"'Get some sleep, professor.'", to:'end:e_drop'} ]},
+    s3c:{ text:"'Publish,' he repeats, tasting the word. 'Thirty years, and the answer is a PDF.' He laughs until it turns into something else. 'You are right. Of course you are right. First light, I will send it everywhere. Every journal, every forum. Let them all have it at once.' He holds the satchel a little less tightly.",
+      choices:[
+        {t:"Drive him home.", to:'end:e_publish'} ]}
+  },
+  endings:{
+    e_notebook:{ title:"The Notebook", tip:22,
+      text:"You drive aimless loops until his breathing slows. 'Keep it safe,' you had said, and he nodded like you had given him orders. At dawn you drop him at a diner. He orders coffee, opens the notebook, and starts writing. Whatever is in there, it is his. The gray coats can wait." },
+    e_drop:{ title:"The Drop", tip:28,
+      text:"He gives you an address in the hills, a house with the lights on. 'My sister,' he says. 'She thinks I am mad too, but she will let me in.' At the door he turns back. 'If the lights go out someday, driver, remember: somebody solved it.' The door closes. The street is quiet." },
+    e_publish:{ title:"First Light", tip:18,
+      text:"You get him home by 2. He sits at his kitchen table with the satchel and a laptop from 2011. 'Send it everywhere,' he mutters, typing. You wait until the first upload bar fills. Outside, the sky is going gray at the edges. Whatever happens next, it is out of the notebook now." }
+  }
+}
+];
+/* ============ game flow ============ */
+var G = { queue:[], fareIdx:0, pid:null, scene:null, nightTips:0, nightNew:0 };
+
+function $(id){ return document.getElementById(id); }
+function show(id){
+  ['scr-title','scr-intro','scr-scene','scr-ending','scr-summary','scr-gallery'].forEach(function(s){
+    $(s).classList.toggle('hidden', s !== id);
+  });
+  window.scrollTo(0,0);
+}
+function passById(pid){ for(var i=0;i<STORY.length;i++) if(STORY[i].id===pid) return STORY[i]; return null; }
+
+/* deterministic fare rotation: night n serves 3 passengers, rotating */
+function faresForNight(n){
+  var q = [];
+  for(var k=0;k<3;k++) q.push(STORY[(n*3+k)%STORY.length].id);
+  return q;
+}
+
+function refreshTitle(){
+  $('t-earned').textContent = '$' + store.earned();
+  $('t-nights').textContent = store.nights();
+  var e = store.endings(), n = 0;
+  STORY.forEach(function(p){ n += (e[p.id]||[]).length; });
+  $('t-endings').textContent = n + ' / 15';
+}
+
+function startNight(){
+  audio.start();
+  G.queue = faresForNight(store.nights());
+  G.fareIdx = 0; G.nightTips = 0; G.nightNew = 0;
+  showFareIntro();
+}
+function showFareIntro(){
+  var p = passById(G.queue[G.fareIdx]);
+  $('i-fareno').textContent = 'Fare ' + (G.fareIdx+1) + ' of 3';
+  $('i-pickup').textContent = p.pickup;
+  $('i-name').textContent = p.name;
+  $('i-hook').textContent = p.hook;
+  show('scr-intro');
+}
+function startFare(){
+  var p = passById(G.queue[G.fareIdx]);
+  G.pid = p.id;
+  renderScene(p, p.start);
+}
+function renderScene(p, sid){
+  var sc = p.scenes[sid];
+  G.scene = sid;
+  $('s-pass').textContent = p.name;
+  $('s-text').textContent = sc.text;
+  var box = $('s-choices'); box.innerHTML = '';
+  sc.choices.forEach(function(c){
+    var b = document.createElement('button');
+    b.className = 'choice'; b.textContent = c.t;
+    b.onclick = function(){ choose(p, c.to); };
+    box.appendChild(b);
+  });
+  show('scr-scene');
+}
+function choose(p, to){
+  if(to.indexOf('end:') === 0){ showEnding(p, to.slice(4)); return; }
+  renderScene(p, to);
+}
+function showEnding(p, eid){
+  var e = p.endings[eid];
+  var isNew = store.unlockEnding(p.id, eid);
+  store.addFare(); store.addEarned(e.tip);
+  G.nightTips += e.tip; if(isNew) G.nightNew++;
+  $('e-title').textContent = e.title;
+  $('e-text').textContent = e.text;
+  $('e-tip').textContent = 'Tip: $' + e.tip + (isNew ? '  ·  New ending found' : '');
+  var last = G.fareIdx === G.queue.length - 1;
+  $('btn-nextfare').textContent = last ? 'END THE NIGHT' : 'NEXT FARE';
+  show('scr-ending');
+}
+function nextAfterEnding(){
+  if(G.fareIdx === G.queue.length - 1){ endNight(); return; }
+  G.fareIdx++;
+  showFareIntro();
+}
+function endNight(){
+  store.addNight();
+  $('n-tips').textContent = '$' + G.nightTips;
+  $('n-new').textContent = G.nightNew;
+  $('n-total').textContent = '$' + store.earned();
+  refreshTitle();
+  show('scr-summary');
+}
+function renderGallery(){
+  var e = store.endings(), box = $('g-list'); box.innerHTML = '';
+  STORY.forEach(function(p){
+    var div = document.createElement('div');
+    div.className = 'gallery-item';
+    var got = e[p.id] || [];
+    var h = '<h3>' + p.name + '</h3><p class="count">' + got.length + ' / 3 endings</p>';
+    Object.keys(p.endings).forEach(function(eid){
+      var un = got.indexOf(eid) !== -1;
+      h += '<p class="' + (un ? 'unlocked' : 'locked') + '">' + (un ? p.endings[eid].title : '???') + '</p>';
+    });
+    div.innerHTML = h;
+    box.appendChild(div);
+  });
+  show('scr-gallery');
+}
+
+/* ============ wire up ============ */
+$('btn-clockin').onclick = startNight;
+$('btn-startfare').onclick = startFare;
+$('btn-nextfare').onclick = nextAfterEnding;
+$('btn-another').onclick = startNight;
+$('btn-clockout').onclick = function(){ refreshTitle(); show('scr-title'); };
+$('btn-gallery').onclick = renderGallery;
+$('btn-gback').onclick = function(){ refreshTitle(); show('scr-title'); };
+$('btn-sound').onclick = function(){
+  var on = audio.toggle();
+  $('btn-sound').textContent = 'Sound: ' + (on ? 'on' : 'off');
+};
+if(!store.sound()) $('btn-sound').textContent = 'Sound: off';
+refreshTitle();
+</script>
+</body>
+</html>
