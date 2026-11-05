@@ -87,11 +87,11 @@ html,body{-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;us
   <section id="scr-title">
     <p class="mast">Night shift</p>
     <h1 class="title">The Last Fare</h1>
-    <p class="sub">Five passengers. One rainy city. Drive.</p>
+    <p class="sub">Fifteen passengers. One rainy city. Drive.</p>
     <div class="card">
       <div class="kv"><span>Total earned</span><span id="t-earned">$0</span></div>
       <div class="kv"><span>Nights driven</span><span id="t-nights">0</span></div>
-      <div class="kv"><span>Endings found</span><span id="t-endings">0 / 15</span></div>
+      <div class="kv"><span>Endings found</span><span id="t-endings">0 / 45</span></div>
     </div>
     <button class="primary" id="btn-clockin">CLOCK IN</button>
     <button class="ghost" id="btn-gallery">Endings gallery</button>
@@ -441,6 +441,440 @@ var STORY = [
     e_publish:{ title:"First Light", tip:18,
       text:"You get him home by 2. He sits at his kitchen table with the satchel and a laptop from 2011. 'Send it everywhere,' he mutters, typing. You wait until the first upload bar fills. Outside, the sky is going gray at the edges. Whatever happens next, it is out of the notebook now." }
   }
+},
+{
+  id:'june', name:'June', pickup:'St. Mercy Hospital, 4:20 AM',
+  hook:'A night-shift nurse ending a double, blood on her shoes that is not hers.',
+  start:'s1',
+  scenes:{
+    s1:{ text:"She gets in wearing scrubs the color of shallow water and sits back with her eyes open and nobody home. There is blood on her shoes. Not a lot. Just enough to notice, dried dark at the toes. She does not look at it. She looks at the rain on the windshield like it is the first interesting thing she has seen in sixteen hours. 'St. Mercy to anywhere with a bed,' she says. 'I just worked a double. I am not sure I am still a person.'",
+      choices:[
+        {t:"'Is that blood on your shoes?'", to:'s2a'},
+        {t:"'Double shift. That is sixteen hours.'", to:'s2b'},
+        {t:"Say nothing and drive.", to:'s2c'} ]},
+    s2a:{ text:"'It is his,' she says. 'Mr. Abernathy. Eighty-two. He coded at two in the morning and I did compressions for nineteen minutes.' She looks down at her shoes. 'They tell you in training not to count the minutes. You count them anyway.' The rain ticks on the roof. 'His daughter lives upstate. She was on the phone when it happened. I held it to his ear so she could say goodbye to a room.' She rubs her face. 'I keep thinking I missed something. A sign. A number on a screen.'",
+      choices:[
+        {t:"'You did everything. That is the job.'", to:'s3a'},
+        {t:"'Nineteen minutes is a long time to fight.'", to:'s3b'} ]},
+    s2b:{ text:"'Sixteen,' she says. 'I came on at noon. The day nurse called out and then the night nurse called out and then it was just us.' She ticks them off on her fingers. 'Two codes. One transfer. A man who thought I was his wife.' A weak smile. 'I let him think it. It was easier for both of us.' The city slides past, all wet neon. 'You know what nobody tells you about the night shift? The hospital never sleeps but it dreams. And the dreams are not good.'",
+      choices:[
+        {t:"'Go home and sleep. The ward will survive.'", to:'s3a'},
+        {t:"'Tell me about the man who thought you were his wife.'", to:'s3c'} ]},
+    s2c:{ text:"You drive. Two blocks. Three. Then from the back seat, very quiet: 'You are the first person tonight who did not need anything from me.' She laughs, a dry sound. 'Do you know what that feels like? Sixteen hours of hands and alarms and everybody wanting a piece of you, and then a stranger just drives.' She presses her forehead to the cold window. 'His name was Abernathy. He had the kindest eyes. I held a phone to his ear while his daughter said goodbye from two hundred miles away. That is my whole night. That is the whole story.'",
+      choices:[
+        {t:"'You gave him a good death. That counts.'", to:'s3b'},
+        {t:"'What will you do now?'", to:'s3c'} ]},
+    s3a:{ text:"'What if I missed it?' she says. 'A number trending wrong. A sound. They teach you the signs and then the signs come at 2 AM when you have been up for fourteen hours and your eyes are lying to you.' She is crying now, silently, the way tired people cry. 'Nineteen minutes of compressions. I cracked his ribs, driver. You are supposed to. But I keep hearing it.' You pull over under a streetlight. 'You stayed,' you say. 'His daughter heard a voice that cared. That is not missing anything.'",
+      choices:[
+        {t:"Drive her home.", to:'end:e_home'},
+        {t:"'You need sleep more than answers.'", to:'end:e_shift'} ]},
+    s3b:{ text:"'Two nurses called out,' she says, heat in her voice for the first time all night. 'You know what the ward looks like with half the staff? It looks like tonight. A man dying while I am in another room.' She hits the seat. 'They will hire travelers at triple pay before they fix the ratios.' The anger burns out fast. She pulls a worn envelope from her scrub pocket. 'He gave me this weeks ago. For his daughter. In case.' She turns it over. 'I do not know if I can face her.'",
+      choices:[
+        {t:"'We will deliver it. Together.'", to:'end:e_letter'},
+        {t:"'Sleep first. The world keeps.'", to:'end:e_shift'} ]},
+    s3c:{ text:"'The man who thought I was his wife,' she says. 'His name is Walter. He is ninety. Every night he asks me if the kids got home safe, and every night I say yes.' She smiles, real this time, small. 'It is a lie and it is also true. Somebody's kids got home safe.' The rain has stopped. The streets shine. 'Abernathy asked me last week if I thought his daughter still loved him. I said of course. I did not know. But I said of course, and he slept.' She closes her eyes. 'Maybe that is the job. Saying of course.' She pats her scrub pocket. 'He left an envelope. For his daughter. In case.'",
+      choices:[
+        {t:"Take her home.", to:'end:e_home'},
+        {t:"'The envelope. Let us deliver it.'", to:'end:e_letter'} ]}
+  },
+  endings:{
+    e_home:{ title:"Home", tip:25,
+      text:"She gives you the address and is asleep before the second turn, head against the window, mouth open like a child. You drive slow over the potholes. At her building you sit with the engine off and let her sleep ten more minutes, because nobody else in this city will give them to her. When she wakes she looks embarrassed. 'You did not have to,' she says. 'I know,' you say. She pays the fare and adds a twenty. 'For the ten minutes,' she says." },
+    e_letter:{ title:"The Letter", tip:40,
+      text:"She asks you to drive back to St. Mercy. 'His daughter is driving in from upstate. She will be there by six.' You park across from the emergency entrance and wait with her as the sky goes gray. At six-fifteen a woman with Abernathy's eyes gets out of a tired Honda. June crosses the street with the envelope. You watch from the cab. They stand together a long time. When June gets back in she is crying and smiling at once. 'She said thank you,' June says. 'Like I did something.'" },
+    e_shift:{ title:"Next Shift", tip:20,
+      text:"You take her to the all-night diner on Fifth instead of home. She orders coffee and holds it with both hands like a sacrament. 'I keep thinking about quitting,' she says. 'Every bad night I quit in my head.' She drinks. 'And then I think about Walter asking if the kids got home safe.' She looks at you. 'Somebody has to be there to say yes. Somebody has to say of course.' She pays for both coffees and leaves the waitress five dollars. 'See you tomorrow,' she tells the night, and means the ward." }
+  }
+},
+{
+  id:'marcus', name:'Marcus', pickup:'The Grand Arena, back entrance, 1:35 AM',
+  hook:'A boxer with his hands still wrapped, coming from a fight he lost on purpose.',
+  start:'s1',
+  scenes:{
+    s1:{ text:"He folds himself into the back seat, a big man trying to be small. His hands are still wrapped, white tape gone gray at the knuckles. A gym bag sits between his feet. He smells of sweat and liniment and something else, something like shame. The wrap on his right hand is coming loose, trailing a white tail. 'Drive,' he says. His voice is soft for a man his size. 'Just drive. I do not want to be near this building.' In the mirror, the arena glows behind him, already dark.",
+      choices:[
+        {t:"'Tough fight?'", to:'s2a'},
+        {t:"'You going to unwrap those?'", to:'s2b'},
+        {t:"Say nothing and drive.", to:'s2c'} ]},
+    s2a:{ text:"'Seventh round,' he says. 'Left hook I saw coming from Tuesday.' He looks at his wrapped hands. 'I have taken real beatings. Broken nose twice. This one did not hurt at all and it is the worst one.' The city blurs past. 'A man named Voss came to the gym last month. Said my mother's operation costs forty thousand. Said the seventh round pays fifty.' He laughs without humor. 'I told myself it was for her. I am still telling myself.'",
+      choices:[
+        {t:"'Fifty thousand. Where is it now?'", to:'s3a'},
+        {t:"'Your mother. Tell me about her.'", to:'s3b'} ]},
+    s2b:{ text:"'These?' He holds up his hands. 'I do not know. Taking them off feels like...' He does not finish. The tape is frayed at the edges. 'My trainer wraps them the same way every time. Left first, then right. He has done it for nine years.' He picks at a loose end. 'He was in my corner tonight. He knew. I could see it in his face between rounds. He did not say a word. That was worse than yelling.' He lets his hands fall. 'I can still feel the canvas on my back. It was clean. That is the thing. It was clean and I laid down on it.'",
+      choices:[
+        {t:"'The money. What will you do with it?'", to:'s3a'},
+        {t:"'This Voss. Where do I find him?'", to:'s3c'} ]},
+    s2c:{ text:"You drive. The arena shrinks in the mirror. After a mile he says, 'You are not going to ask.' It is not a question. 'Everybody else will ask. My trainer. The reporters. My mother.' He shifts the gym bag with his foot. 'Fifty thousand dollars in this bag. Cash. A man named Voss gave it to me to fall down in the seventh round.' He says it flat, like reading a grocery list. 'I was ranked ninth, driver. Ninth in the world. And I sold it for fifty thousand and a left hook I saw coming from Tuesday.'",
+      choices:[
+        {t:"'Ninth in the world. That is not nothing.'", to:'s3b'},
+        {t:"'Take me to Voss.'", to:'s3c'} ]},
+    s3a:{ text:"'Her heart,' he says. 'The valve. Forty thousand and the hospital wants it up front.' He nudges the gym bag. 'Fifty in here. Ten left over. I keep doing the math.' The rain starts again, soft on the windshield. 'She does not know. She thinks I won. She called after the fight, crying, so proud.' His voice cracks. 'How do I spend this money, driver? How do I hand a surgeon money I got for laying down?' He looks at you in the mirror. 'Tell me it is worth it. Somebody tell me.'",
+      choices:[
+        {t:"'It is for your mother. That is worth it.'", to:'end:e_money'},
+        {t:"'Then give it back.'", to:'end:e_return'} ]},
+    s3b:{ text:"'Ninth,' he repeats. 'Do you know how many men would kill to be ninth? I sparred with champions. I went twelve rounds with Delacroix and lost on points and the crowd booed the decision.' He stares at his hands. 'My trainer says a fighter gets one moment when he knows. Tonight I knew, and it was not the punch. It was the second before, when I decided.' He is quiet. 'I have been fighting since I was fourteen. It is the only thing I am good at. And I just sold the only thing I am.'",
+      choices:[
+        {t:"'Then go back to the gym. Tonight.'", to:'end:e_gym'},
+        {t:"'The money still saves your mother.'", to:'end:e_money'} ]},
+    s3c:{ text:"'Voss runs a gym on Halsted,' he says. 'Clean place. Good kids. He finds the ones with sick mothers and empty fridges.' His jaw tightens. 'There is a kid, seventeen, lightning in his hands. Voss has been buying him dinners.' He looks out at the rain. 'I could go back there tonight. Walk in with the bag and put it on his desk.' He flexes his wrapped hands. 'Or I could find the kid first. Tell him what fifty thousand costs. Tell him before Tuesday comes for him too.'",
+      choices:[
+        {t:"'Put it on his desk.'", to:'end:e_return'},
+        {t:"'Walk away. Start clean.'", to:'end:e_gym'} ]}
+  },
+  endings:{
+    e_money:{ title:"The Money", tip:50,
+      text:"You drive him to St. Mercy. He sits with the gym bag on his lap a long time before getting out. 'Her surgery is Thursday,' he says. 'I will tell myself it was worth it every day for the rest of my life. Maybe someday I will believe it.' He pays the fare from a roll of clean bills, not the bag. 'Do not tell my mother,' he says. 'Let her think her son won a fight.' The hospital doors swallow him. The bag never opens in your cab. Some things you do not watch." },
+    e_return:{ title:"The Return", tip:15,
+      text:"You drive to the gym on Halsted. The lights are still on. Marcus takes the bag and walks in like a man going to his own funeral. You wait. Ten minutes. Fifteen. He comes out with empty hands and a split lip and the first real smile you have seen all night. 'He did not take it well,' Marcus says, touching his mouth. 'But he took it.' He unwraps his hands in the back seat, slowly, and drops the tape out the window into the rain. 'Thursday I call the hospital,' he says. 'We will figure out the rest.'" },
+    e_gym:{ title:"The Gym", tip:30,
+      text:"You drive him to his own gym, a basement on Crane Street. He unlocks it with a key on a string around his neck. Inside it smells of leather and sweat and honest work. He unwraps his hands, finally, the tape coming off in long white curls, and pulls on the bag gloves. The first punch lands like a gunshot in the empty room. Then another. He does not stop for twenty minutes. When he is done he leans on the ropes, breathing hard. 'Tomorrow,' he says. 'We start over tomorrow. And in the morning I find that kid.'" }
+  }
+},
+{
+  id:'ada', name:'Ada', pickup:'The Whitmore Chapel steps, 2:47 AM',
+  hook:'A woman in a wedding dress holding one shoe. She ran.',
+  start:'s1',
+  scenes:{
+    s1:{ text:"She is sitting on the chapel steps when you pull up, wedding dress pooled around her like spilled milk. One shoe on. One shoe in her hand. The veil is half off, caught on a hairpin. She gets in without being asked and says, 'Drive,' in a voice that has been crying for an hour and is done now. 'Please just drive.' In the mirror her mascara has made dark rivers. She looks at them and laughs, one short bark. 'I look like a raccoon,' she says. 'A runaway raccoon bride.'",
+      choices:[
+        {t:"'What happened in there?'", to:'s2a'},
+        {t:"'You want to talk about the shoe?'", to:'s2b'},
+        {t:"Say nothing and drive.", to:'s2c'} ]},
+    s2a:{ text:"'I got to the part where he says do you take this woman,' she says, 'and I looked at Daniel, and he is a good man, driver, that is the terrible part, he is a genuinely good man, and I thought: I am about to promise forever to a life I do not want.' She twists the shoe in her hands. 'So I said excuse me. Very polite. Like I was going to the ladies\u2019 room. And then I kept walking. Down the aisle. Out the doors. Down the steps. I am still walking, really. You are just driving me while I do it.'",
+      choices:[
+        {t:"'Daniel. Is he still at the chapel?'", to:'s3a'},
+        {t:"'A good man is a bad reason to stay.'", to:'s3b'} ]},
+    s2b:{ text:"'It came off on the steps,' she says, holding it up like evidence. 'Three hundred dollars, dyed to match, and it betrayed me on step four.' She tries to put it back on and gives up, laughing. 'My mother spent six months planning this wedding. Six months. Seating charts. A string quartet.' The laugh fades. 'She is probably still at the chapel, telling everyone I am ill. She would rather I be sick than honest.' She looks down at her bare foot. 'I have never felt more like myself than right now, with one shoe.'",
+      choices:[
+        {t:"'Your mother will survive. What about Daniel?'", to:'s3a'},
+        {t:"'Where will you go?'", to:'s3c'} ]},
+    s2c:{ text:"You drive. The chapel gets smaller in the mirror, all lit windows and bad decisions. After a while she says, 'Do you want to know the worst part? The dress is beautiful. I picked it myself. I loved it.' She smooths the skirt. 'I loved the flowers and the cake tasting and all of it. I just did not want the marriage.' She pulls the veil free and drops it on the seat. 'Everyone thinks the dress is the dream. The dress was never the dream. The dress was the costume for a play I did not audition for.'",
+      choices:[
+        {t:"'Keep the dress. Lose the play.'", to:'s3b'},
+        {t:"'So what is the dream?'", to:'s3c'} ]},
+    s3a:{ text:"'He is probably still there,' she says. 'Daniel does not leave a room until everyone else is okay. That is who he is.' She is quiet. 'He deserves someone who wants the life. The house. The kids\u2019 names picked out.' She looks at the chapel shrinking behind you. 'I keep thinking I should go back and explain. But explaining would be crueler. You cannot unring a runaway bride.' She puts the shoe on the dashboard. 'He will find someone better. Someone who stays for the vows.'",
+      choices:[
+        {t:"Turn around. Take her back.", to:'end:e_chapel'},
+        {t:"'Forward it is. Where to?'", to:'end:e_station'} ]},
+    s3b:{ text:"'I am still wearing it,' she says, plucking at the skirt. 'Two thousand dollars of ivory silk and I am sitting in a cab at 3 AM dressed for a wedding that is happening without me.' She laughs, real this time. 'You know what I want? Pancakes. I want to sit in a diner in this ridiculous dress and eat pancakes and not be anyone\u2019s anything.' She kicks off the other shoe. It lands on the floor with a small, final sound. 'Barefoot bride. That is me now. That is the whole biography.'",
+      choices:[
+        {t:"'Pancakes it is.'", to:'end:e_diner'},
+        {t:"'The chapel is still an option.'", to:'end:e_chapel'} ]},
+    s3c:{ text:"'I have nowhere to go,' she says. 'My apartment is full of wedding gifts I have to return. My mother will not speak to me for a month.' She counts on her bare fingers. 'I have four hundred dollars in my clutch, no phone charger, and one shoe.' She looks at you. 'My sister lives in Cleveland. She eloped at nineteen and my mother still brings it up at Thanksgiving.' A slow smile. 'Maybe it runs in the family. Maybe we are just women who leave.' She leans back. 'Cleveland. I have never even been.'",
+      choices:[
+        {t:"'Bus station. Cleveland.'", to:'end:e_station'},
+        {t:"'First pancakes. Then Cleveland.'", to:'end:e_diner'} ]}
+  },
+  endings:{
+    e_chapel:{ title:"The Chapel", tip:30,
+      text:"You turn the car around. Neither of you speaks on the way back. At the chapel the doors are still open, light spilling down the steps. She puts both shoes on, slowly, like armor. 'Will you wait?' she asks. 'Five minutes.' You wait twenty. She comes out holding Daniel's hand. He looks wrecked and relieved at once. She leans into your window. 'I am going to try,' she says. 'Really try. If it does not work, I will call you. You are my getaway driver now.' She almost smiles. 'Do not wait up.'" },
+    e_station:{ title:"The Station", tip:18,
+      text:"The bus station smells of diesel and old coffee. The Cleveland bus leaves at 4:10. She buys the ticket with the four hundred and has enough left for breakfast. On the platform she hugs you, veil and all, and you can feel her shaking. 'Tell Daniel I am sorry,' she says. 'Tell my mother I will call.' The bus doors sigh shut. Through the window she holds up the one shoe like a trophy. Then Cleveland, and whatever comes after. You drive back into the rain feeling lighter than the fare." },
+    e_diner:{ title:"Pancakes", tip:42,
+      text:"The diner on Fifth is empty except for a cook who has seen everything. She slides into the booth, dress and all, and orders the short stack with extra syrup. She eats like a woman who has not eaten since yesterday, which she has not. 'This,' she says, pointing with her fork, 'is the best wedding I have ever been to.' You drink coffee and watch the sky go gray outside. When the check comes she pays for both and leaves a twenty. 'For the witness,' she says. 'Every wedding needs one.'" }
+  }
+},
+{
+  id:'otis', name:'Otis', pickup:'The Blue Note basement club, 3:10 AM',
+  hook:'An old trumpet player with a dented case full of letters he never sent.',
+  start:'s1',
+  scenes:{
+    s1:{ text:"He comes up out of the basement stairwell slow, the way old men climb when they are pretending it does not hurt. The trumpet case is dented on one corner and held shut with a belt. He sets it on the seat like it is sleeping. 'Blue Note is done,' he says. 'Last set. Last night. They are turning it into a bank.' Rain ticks on the roof. 'Drive, son. I do not care where.'",
+      choices:[
+        {t:"'Good gig, at least?'", to:'s2a'},
+        {t:"'That case has seen things.'", to:'s2b'},
+        {t:"Say nothing and drive.", to:'s2c'} ]},
+    s2a:{ text:"'Good?' He considers it. 'My hands are seventy-three years old and they played like they were sixty. The young cats in the band, they looked at me like a museum piece with a pulse.' He laughs, dry. 'Forty years I played that room. Tonight the owner cried into the register. I did not cry. I am saving it.' The case sits between his hands. 'You know what is in here besides the horn? Paper. A lifetime of paper.'",
+      choices:[
+        {t:"'Letters?'", to:'s3a'},
+        {t:"'Where to, Otis?'", to:'s3c'} ]},
+    s2b:{ text:"'Seen things,' he repeats. 'Seen everything.' He pops the belt and opens the case a crack. Inside, under the trumpet, bundles of envelopes tied with string, yellowed at the edges. 'Every year since 1984. One letter. Never sent one.' He closes it again, gentle. 'Her name was Mara. Sang like the room was on fire. One summer I played behind her and I have been writing to her ever since. She married a dentist in Ohio. I looked it up. Twice.'",
+      choices:[
+        {t:"'What do the letters say?'", to:'s3a'},
+        {t:"'Forty years of paper is heavy.'", to:'s3b'} ]},
+    s2c:{ text:"You drive. The wipers keep time. After six blocks he speaks, low, like he is talking to the window. 'Last note tonight, I held it too long. On purpose. The band waited. The room waited. I just wanted to hear it end.' He rests one hand on the case. 'There are letters in there. Forty of them. To a woman who would not know my face. I wrote them because the horn could not say it.'",
+      choices:[
+        {t:"'Then send them.'", to:'s3a'},
+        {t:"'Then let them go.'", to:'s3b'} ]},
+    s3a:{ text:"'Forty letters,' he says. 'The first one says I love you. The fortieth one says I am sorry I never learned how to say it out loud.' He looks at you in the mirror. 'The post office on Grand, it has the all-night slot. Or the river. Paper burns clean and the river does not judge.' He is asking you. Old men ask drivers because drivers have seen every version of the ending.",
+      choices:[
+        {t:"Drive to the all-night post office.", to:'end:e_mail'},
+        {t:"Drive to the river.", to:'end:e_burn'} ]},
+    s3b:{ text:"'Heavy,' he agrees. 'Heavier than the horn, and the horn is brass.' He is quiet while the city slides past. Then: 'You know what nobody tells you about the last gig? It is not sad while you are playing. It is sad after. When the case closes and the room goes dark and your hands are still warm.' He taps the case twice, like knocking on a door.",
+      choices:[
+        {t:"'Play one. For the road.'", to:'end:e_lastcall'},
+        {t:"'The room will remember you.'", to:'end:e_mail'} ]},
+    s3c:{ text:"'Take me past the club,' he says. 'One more time. Slow.' You circle the block. The Blue Note sign is already dark, the windows papered over. He does not look away. 'Forty years,' he says. 'I played my first set in that room when the owner was in diapers. Now it is a bank. People will keep their money where I kept my soul.'",
+      choices:[
+        {t:"'One last tune, then. Anywhere.'", to:'end:e_lastcall'},
+        {t:"'The letters go out tonight.'", to:'end:e_mail'} ]}
+  },
+  endings:{
+    e_mail:{ title:"Postage Due", tip:35,
+      text:"The all-night slot on Grand swallows forty envelopes one by one. He feeds them in slow, like dealing cards. The last one he holds a moment longer. 'Mara,' he says, and lets it go. On the drive back he opens the case and takes out the horn just to hold it. 'Forty years of unsent,' he says. 'Tonight I sent forty-one.'" },
+    e_burn:{ title:"Ashes", tip:22,
+      text:"You park by the river where the warehouses are. He builds the little fire in a dented hubcap with shaking hands and feeds the letters in two at a time. The smoke smells like old paper and rain. When it is done he sits a long time. 'She married a dentist,' he says finally, and laughs until it is not laughing. The horn stays in the case. The case feels lighter. So does he." },
+    e_lastcall:{ title:"Last Call", tip:45,
+      text:"You pull over under the el and he opens the case for real this time. The trumpet comes out gleaming despite the dent, and he plays. One tune. Slow. The rain keeps time on the roof and you do not breathe. When the last note fades he holds it too long, on purpose. 'That one was for Mara,' he says. 'She never heard a one of them, but that one was for Mara.'" }
+  }
+},
+{
+  id:'nadia', name:'Nadia', pickup:'The Consulate, service entrance, 12:55 AM',
+  hook:'A UN interpreter who tonight translated something she was never supposed to hear.',
+  start:'s1',
+  scenes:{
+    s1:{ text:"She comes out of the service entrance at a half run, coat over her head against the rain, and gets in before you can ask. 'Drive,' she says. 'Please. Just drive.' She checks the back window twice. Her hands are shaking. An interpreter badge hangs from her neck on a lanyard: UNITED NATIONS, six little flags. 'Do not take the avenue,' she says. 'Side streets.'",
+      choices:[
+        {t:"'Who is following you?'", to:'s2a'},
+        {t:"'Slow down. Breathe.'", to:'s2b'},
+        {t:"'Rough night at the UN?'", to:'s2c'} ]},
+    s2a:{ text:"'Nobody. Probably nobody.' She says it too fast. 'I am an interpreter. Six languages. Tonight I was in the corridor between sessions and two men were talking in Russian, and they thought the corridor was empty.' She twists the lanyard in her hands. 'I understood every word, driver. That is the problem with being invisible for a living. Sometimes you hear the things they only say when they think no one is there.'",
+      choices:[
+        {t:"'What did they say?'", to:'s3a'},
+        {t:"'Maybe you misheard.'", to:'s3b'} ]},
+    s2b:{ text:"She breathes. In through the nose, out through the mouth, the way people do when they have practiced being calm. 'I am the voice in the earpiece,' she says. 'Nobody looks at the interpreter. That is the job. Be the glass, not the water.' A short laugh. 'Tonight I was glass in the wrong corridor. Two delegates. Russian. Words about a shipment and a vote and a man named Voss.'",
+      choices:[
+        {t:"'Say the rest.'", to:'s3a'},
+        {t:"'Go home. Sleep it off.'", to:'s3c'} ]},
+    s2c:{ text:"'Rough,' she agrees, and the laugh has an edge. 'The session ran late. I went for air. The service corridor, you know the one, concrete and pipes. Two men came in behind me. They spoke Russian. They did not know I was there, or they did not care.' She looks at you in the mirror. 'I keep translating it in my head. It will not stop. That is what we do. We translate. Even when we should not.'",
+      choices:[
+        {t:"'Say it out loud, then.'", to:'s3a'},
+        {t:"'Then stop translating.'", to:'s3b'} ]},
+    s3a:{ text:"She closes her eyes. 'The Meridian votes Thursday. The crates move Wednesday night. If Voss talks, he does not reach Friday.' The words land in the cab like stones in water. She opens her eyes. 'That is what they said. Word for word. I do not know what the crates are. I do not want to know.' Her voice drops. 'Driver. What do I do with a sentence like that?'",
+      choices:[
+        {t:"Drive to the 9th Precinct.", to:'end:e_report'},
+        {t:"'You heard nothing. Go home.'", to:'end:e_silence'} ]},
+    s3b:{ text:"'Misheard,' she repeats, trying it on. 'Six languages, ten years, and tonight my ears failed me.' She does not sound convinced. Outside, a gray sedan pulls away from the curb two cars back. Or it was always going to pull away. At 1 AM every car looks like it is following you. 'If they know I heard,' she says quietly, 'then I am a loose end. Do you know what happens to loose ends, driver?'",
+      choices:[
+        {t:"'Then we drive until it is gone.'", to:'end:e_run'},
+        {t:"'Nobody is following you.'", to:'end:e_silence'} ]},
+    s3c:{ text:"She gives you an address in Queens, a walk-up over a bakery. Ordinary. Safe. The kind of place where nothing happens in Russian. 'My cat will be angry,' she says. 'I was supposed to be home at ten.' She is quiet for a while. Then: 'But I will lie awake translating it. Word for word. All night. Every night.'",
+      choices:[
+        {t:"Take her home.", to:'end:e_silence'},
+        {t:"Turn around. The precinct.", to:'end:e_report'} ]}
+  },
+  endings:{
+    e_report:{ title:"On the Record", tip:50,
+      text:"The 9th Precinct at 2 AM smells of coffee and wet wool. She gives her name and her badge number and the sentence, word for word, to a detective who writes it down without blinking. On the way out she stands straighter. 'Whatever happens now,' she says, 'it is on the record. I am not a loose end if I am a witness.' The rain has stopped. Her hands have too." },
+    e_silence:{ title:"The Glass", tip:30,
+      text:"You drive her home to Queens. She does not speak for the last twenty blocks. At the curb she takes off the lanyard and looks at it a long moment before putting it in her bag. 'Be the glass, not the water,' she says. 'Tonight I will be the glass.' She pays and climbs the stairs. The bakery light is on. Nothing happens in Russian there." },
+    e_run:{ title:"Side Streets", tip:40,
+      text:"You drive. Not home, not the precinct, just the grid, side streets and service roads, until the gray sedan is three turns behind or never existed. She watches the mirrors the whole way, translating the city into safe and not safe. At the river she finally breathes. 'Thank you,' she says. 'For not asking me to decide tonight.' Some fares you do not complete. You complete the driving." }
+  }
+},
+{
+  id:'paul', name:'Father Paul', pickup:'St. Agnes Rectory, 2:20 AM',
+  hook:'A priest with a sealed letter and somewhere he cannot bring himself to go.',
+  start:'s1',
+  scenes:{
+    s1:{ text:"He comes down the rectory steps in the rain without an umbrella, collar white against the black coat, a sealed envelope in his hand. He gets in the back and holds the envelope the way people hold things they are afraid to put down. 'Drive, please,' he says. 'I will tell you where. I am still deciding.'",
+      choices:[
+        {t:"'Where to, Father?'", to:'s2a'},
+        {t:"'That letter looks heavy.'", to:'s2b'},
+        {t:"Say nothing and drive.", to:'s2c'} ]},
+    s2a:{ text:"'St. Mary's Hospital called an hour ago,' he says. 'A man is dying. Room 412. He asked for a priest from St. Agnes.' He turns the envelope over in his hands. 'I am the priest from St. Agnes. That is the entire problem.' Rain drums on the roof. 'How do I walk into that room, driver? Tell me how.'",
+      choices:[
+        {t:"'Then we go to St. Mary's.'", to:'s3a'},
+        {t:"'What is stopping you?'", to:'s3b'} ]},
+    s2b:{ text:"'It is my resignation,' he says. 'To the bishop. Sealed tonight, an hour ago. Twenty-three years, driver. Twenty-three years of homilies and hospital corridors.' He almost smiles. 'The envelope is the heaviest thing I own. Heavier than the cross I used to wear. I took that off in April.'",
+      choices:[
+        {t:"'What happened in April?'", to:'s3b'},
+        {t:"'A letter can wait. A dying man cannot.'", to:'s3a'} ]},
+    s2c:{ text:"You drive. The city is empty enough to hear the tires on the wet street. After a while he speaks, not to you, to the window. 'St. Mary's called. Room 412. A man is dying and he asked for me. For a priest.' A pause. 'And this,' he says, lifting the envelope, 'is my resignation. I wrote it tonight. I do not know which one I am more afraid to deliver.'",
+      choices:[
+        {t:"'Tell me about April.'", to:'s3b'},
+        {t:"'Room 412, then.'", to:'s3c'} ]},
+    s3a:{ text:"He looks out at the rain the way you look at deep water. 'What if I go in there and the words are empty?' he says. 'What if he looks at me and sees it, that I am just a man in a costume? A dying man deserves better than theater.' His thumb traces the seal of the envelope. 'But he asked for a priest. And I am still, technically, a priest.'",
+      choices:[
+        {t:"Drive to St. Mary's.", to:'end:e_rites'},
+        {t:"'Then do not go as a priest. Go as a man.'", to:'end:e_man'} ]},
+    s3b:{ text:"'April,' he says. 'A seven-year-old. Leukemia. I stood at that little coffin and said the words about God's plan, and the mother looked at me, and I saw that she knew. She knew I did not believe a syllable.' His voice is steady and ruined. 'I have been saying the words ever since. Every Sunday. Theater. Tonight I wrote the letter because I could not say them one more time.'",
+      choices:[
+        {t:"'Faith comes back, Father. It is patient.'", to:'end:e_rites'},
+        {t:"'Then send the letter. Be honest.'", to:'end:e_letter'} ]},
+    s3c:{ text:"'Room 412,' he says. 'I never met him. He asked for St. Agnes because his mother was married there, sixty years ago. That is the whole connection. Sixty years and a dying wish.' He is quiet. 'He does not know me. He will not know if my hands are shaking. He will only know that someone came.'",
+      choices:[
+        {t:"Drive to St. Mary's.", to:'end:e_man'},
+        {t:"'The letter first. Then decide.'", to:'end:e_letter'} ]}
+  },
+  endings:{
+    e_rites:{ title:"Last Rites", tip:40,
+      text:"St. Mary's at 3 AM is all humming lights and hushed shoes. Room 412. The man is small in the bed, breathing like paper tearing. Paul puts on the stole with steady hands and says the words. Latin, then English. The man's breathing slows. Whether it is God or theater, the room goes peaceful. In the hall Paul weeps once, hard, and then stops. 'Thank you,' he says. To no one. To you." },
+    e_man:{ title:"Company", tip:25,
+      text:"He leaves the collar in the cab. 'Hold this,' he says, like it burns. In room 412 he pulls up a chair, takes the old man's hand, and says no prayers at all. He talks about the rain instead. About the drive over. Ordinary things, in a steady voice. The man's breathing evens out. Whether he sleeps or goes, he does not go alone. In the hall Paul looks at his hands a long time. 'They still work,' he says. 'Even empty, they still work.'" },
+    e_letter:{ title:"Sealed", tip:20,
+      text:"You drive him to the all-night post slot on Grand. He holds the envelope a long moment, then lets it fall. It lands with a soft sound, twenty-three years settling. 'It is done,' he says, and sounds surprised. 'I thought it would feel like falling.' On the drive back he watches the city like a man seeing it for the first time. 'Room 412 will get another priest,' he says. 'A better one. One who still believes.'" }
+  }
+},
+{
+  id:'del', name:'Del', pickup:'The Starlight Diner, kitchen door, 1:15 AM',
+  hook:'A short-order cook who walked out mid-dinner-rush, knife roll in hand.',
+  start:'s1',
+  scenes:{
+    s1:{ text:"He comes out the kitchen door with his apron still on and a canvas knife roll tucked under his arm like a football. The Starlight is packed behind the glass, every booth full, tickets lined up on the rail in the window. A waitress scans the kitchen door with panic on her face. He gets in the back and says, 'Drive.' Just that. The apron smells like twenty years of grease and onions and flat-top smoke. His hands are shaking. Not from the cold.",
+      choices:[
+        {t:"'Mid-rush? That is bold.'", to:'s2a'},
+        {t:"'The apron says twenty years. The hands agree.'", to:'s2b'},
+        {t:"Drive without a word.", to:'s2c'} ]},
+    s2a:{ text:"'The nephew,' he says. 'The owner's nephew. Twenty-two, culinary school dropout, and tonight he walks into my kitchen and changes my short stack recipe. My short stack. Twenty years I have made that pancake the same way, and this kid tells me the customers want it fluffier.' He stares out the window. 'I told him the griddle is mine. He told me the diner is his uncle's. He was right. So I took my knives and walked. Middle of the rush. Let him flip his own pancakes.'",
+      choices:[
+        {t:"'Twenty years beats twenty-two years old.'", to:'s3a'},
+        {t:"'Maybe the kid has a point about the pancakes.'", to:'s3b'} ]},
+    s2b:{ text:"'Twenty years,' he says, like he heard your thought. 'Started as a dishwasher at nineteen. Moved to the grill in six months. Never left.' He unrolls the knife roll on his lap and looks at the blades the way other men look at photographs. 'These knives have been in my hands longer than my ex-wife. Longer than my kid has been alive.' He laughs, but it catches in his throat. 'I do not know how to do anything else. That is the part that scares me.'",
+      choices:[
+        {t:"'Knowing one thing well is not nothing.'", to:'s3b'},
+        {t:"'Then do not let tonight be the end of it.'", to:'s3c'} ]},
+    s2c:{ text:"You drive. He sits with the knife roll on his lap and watches the city go by. After a mile he says, 'You want to know what the last ticket was? Table twelve. Two short stacks, extra crispy bacon. I read it, I picked up my spatula, and I just stopped.' He flexes his right hand, slow. 'Twenty years, and my hand said no. Not my head. My hand. Like it knew before I did.' The rain ticks on the roof. Neither of you speaks for a while.",
+      choices:[
+        {t:"'Your hand was right.'", to:'s3a'},
+        {t:"'Hands get tired. They also heal.'", to:'s3c'} ]},
+    s3a:{ text:"'Turn around,' he says suddenly. 'Take me back. Not to apologize. To finish the rush. Those tickets are mine and nobody else touches my grill.' But his voice wavers on the last word. 'Or keep driving and I never go back. Twenty years is enough for any man.' He looks at you in the mirror. 'Your call, driver. You are the one with the wheel.'",
+      choices:[
+        {t:"Turn around. Take him back.", to:'end:e_grill'},
+        {t:"Keep driving.", to:'end:e_done'} ]},
+    s3b:{ text:"He runs his thumb along the edge of the chef's knife, testing. 'My grandfather was a butcher. My father drove a truck. I got the grill. Every family gets one thing it is good at.' He looks up at you. 'Maybe I do not need the Starlight. Maybe I need a grill with my name on it. A truck. A corner. Something small and mine, where nobody's nephew touches the recipes.'",
+      choices:[
+        {t:"'A truck. Your name on the side.'", to:'end:e_truck'},
+        {t:"'The Starlight needs you more than you need it.'", to:'end:e_grill'} ]},
+    s3c:{ text:"'My kid is seventeen,' he says. 'She asked me last week what I wanted to be when I grew up. I laughed. Then I could not sleep.' He rolls the knives back up, careful and precise, each one in its slot. 'Maybe the answer is done. Maybe I already was what I wanted to be, and tonight was the last shift. How do you know when it is the last one, driver?'",
+      choices:[
+        {t:"'You know. Your hand knew.'", to:'end:e_done'},
+        {t:"'One more rush. Finish it right.'", to:'end:e_grill'} ]}
+  },
+  endings:{
+    e_grill:{ title:"The Last Rush", tip:35,
+      text:"You turn the car around and he is out before it stops, apron still on, knife roll under his arm. Through the window you watch him take his station. The nephew says something. Del says something back, short. Then the grill hisses and the tickets start moving. You wait until the rush breaks. He comes out at 3 AM, spent and grinning, and presses two twenties into your hand. 'Nobody touches my grill.'" },
+    e_done:{ title:"Hung Up the Apron", tip:25,
+      text:"You keep driving. He watches the Starlight shrink in the mirror until the rain takes it. 'Twenty years,' he says, quiet. 'That is a whole life.' He folds the apron and sets it on the seat between you like it belongs to someone else now. At the next light he gets out, knife roll under his arm, and walks into the rain without looking back. The meter says twenty-five. It feels like more." },
+    e_truck:{ title:"Del's", tip:20,
+      text:"'A truck,' he repeats, tasting it. 'Del's. Short stacks the way they are supposed to be.' He is already planning it out loud: the corner by the depot, the griddle seasoned right, nobody's nephew within a mile. You drop him at an all-night lot where a used food truck sits with a for-sale sign in the window. He stands in the rain looking at it for a long time. Then he smiles. It is the first real one all night." }
+  }
+},
+{
+  id:'silas', name:'Silas', pickup:'A payphone on 9th and Mercer, 3:30 AM',
+  hook:'A locksmith with a work order for an address that does not exist.',
+  start:'s1',
+  scenes:{
+    s1:{ text:"The payphone on 9th and Mercer is ringing when you pull up. That is the first strange thing. The second is the man standing under it in the rain, holding a work order in a plastic sleeve like it is evidence. His locksmith van is parked crooked at the curb. He gets in and the phone stops ringing. 'Did you hear that?' he asks. 'It was ringing. Payphones do not ring anymore.' He is forty, maybe, with tired eyes and his company patch half peeled off his jacket.",
+      choices:[
+        {t:"'I heard it.'", to:'s2a'},
+        {t:"'Let me see the work order.'", to:'s2b'},
+        {t:"'You look spooked.'", to:'s2c'} ]},
+    s2a:{ text:"'47 Bell Court,' he says, holding up the work order in its plastic sleeve. 'Lockout. Called in at 2:50, paid in advance, every code correct.' He taps the address with one finger. 'So I drove there. And driver, there is no Bell Court. Not on 9th, not anywhere in this city. I checked the map twice and drove the block three times. Where 47 should be, there is a parking garage. It has been there since I was a kid. Concrete and chain link. No doors to unlock.'",
+      choices:[
+        {t:"'Take me there. I want to see it.'", to:'s3a'},
+        {t:"'Somebody is playing a joke on you.'", to:'s3b'} ]},
+    s2b:{ text:"'The order is real,' he says. 'That is the part that scares me. It came through dispatch like any other job. Account number, authorization, the customer's name.' He squints at the paper. 'The name is smudged. Water got in the sleeve. But the codes are right, driver. I called them back and the line just rang.' He looks up. 'Fifteen years I have done this job. I have never had a work order I could not drive to.'",
+      choices:[
+        {t:"'Call dispatch and verify it.'", to:'s3b'},
+        {t:"'Then we go look at the garage.'", to:'s3a'} ]},
+    s2c:{ text:"You drive. He keeps turning the work order over in the plastic sleeve, front to back, like the answer is on the other side. 'Fifteen years,' he says finally. 'Fifteen years of locked doors and I have never been scared of a job. Not the bad neighborhoods, not the 4 AM calls.' He looks out at the rain. 'But a door that does not exist, driver? That is a new one. That is a new one entirely.'",
+      choices:[
+        {t:"'Fear is data. Listen to it.'", to:'s3c'},
+        {t:"'The only way past it is through it.'", to:'s3a'} ]},
+    s3a:{ text:"'Take me there,' he says. '47 Bell Court. The garage. I know there is nothing there, but I need to stand where the door should be and see it with my own eyes.' He folds the work order and puts it in his breast pocket. 'If I do not go, I will think about this every night for a year. You know how it is, driver. Some jobs you do not finish, they finish you.'",
+      choices:[
+        {t:"Drive to the garage.", to:'end:e_bellcourt'} ]},
+    s3b:{ text:"'Call dispatch,' he says. 'Right now. I want to hear a human being tell me this order is real.' He digs out his phone with shaking hands. 'Because if it is real, somebody out there is locked out of somewhere and waiting. And if it is not real...' He does not finish. He does not have to. You pull over under a streetlight and he dials. The rain drums on the roof while it rings.",
+      choices:[
+        {t:"Wait while he calls.", to:'end:e_dispatch'},
+        {t:"Drive to the address while he waits on hold.", to:'end:e_bellcourt'} ]},
+    s3c:{ text:"'No,' he says. 'I am done.' He takes the work order out of the sleeve and holds it out to you, the paper damp, the ink bled at the edges. The address is still readable. 47 Bell Court. 'You do it,' he says. 'I do not want to touch it anymore. Some jobs you walk away from, driver. This is one.'",
+      choices:[
+        {t:"Tear it up.", to:'end:e_torn'} ]}
+  },
+  endings:{
+    e_bellcourt:{ title:"47 Bell Court", tip:40,
+      text:"The garage is exactly where he said. Concrete, chain link, a bored attendant. You park across the street and he walks to the spot where 47 should be. He stands there in the rain for a full minute. Then he kneels and picks something up: a brass key, old, with a paper tag. The tag says 47. He does not say a word on the drive back. He does not have to." },
+    e_dispatch:{ title:"No Record", tip:30,
+      text:"Dispatch answers on the fourth ring. He reads the order number twice. There is a long pause, keyboards in the background. 'Sir,' the dispatcher says, 'we have no record of that order. That account number was closed in 2019.' Silas goes very still. 'Thank you,' he says, and hangs up. He looks at the work order in his lap. The ink is still wet. It was printed tonight." },
+    e_torn:{ title:"Torn Up", tip:20,
+      text:"You tear the work order once, twice, and let the pieces fall into the footwell. He lets out a breath like he has been holding it for an hour. 'Thank you,' he says. 'Fifteen years and I finally learned when to walk away.' You drive him back to his van. As you pull away, the payphone on 9th and Mercer starts ringing again. Neither of you looks back. Some doors stay closed." }
+  }
+},
+{
+  id:'imani', name:'Imani', pickup:'The dispatch center, 4:00 AM',
+  hook:'A 911 dispatcher ending her shift, still hearing the calls.',
+  start:'s1',
+  scenes:{
+    s1:{ text:"The dispatch center doors hiss shut behind her at 4 AM sharp. She still has the headset on, the mic pushed up, like she forgot it was there. She gets in the back and does not give an address. 'Just drive,' she says. 'I need the city to be quiet for a while.' You can hear it in her voice. Eight hours of other people's worst nights. Her name tag says IMANI. Her eyes are red, but she is not crying. Dispatchers do not cry on shift. Maybe not off it either.",
+      choices:[
+        {t:"'Rough shift?'", to:'s2a'},
+        {t:"'You can take the headset off. Shift is over.'", to:'s2b'},
+        {t:"Drive, quiet.", to:'s2c'} ]},
+    s2a:{ text:"'A boy,' she says. 'Maybe eight. He whispered, like he did not want to be heard. He said, he is back, and then the line went dead.' She takes the headset off finally and holds it in her lap. 'I dispatched units in forty seconds. Forty. I did everything right. But I keep hearing the whisper. He is back. Like I was supposed to know who he meant.' She looks at you. 'I have taken thousands of calls. This is the one that followed me out the door.'",
+      choices:[
+        {t:"'Forty seconds. You did your job.'", to:'s3b'},
+        {t:"'Do you know the address?'", to:'s3a'} ]},
+    s2b:{ text:"'Eight years,' she says. 'Eight years of heart attacks and break-ins and car wrecks, and I have a system. You take the call, you send the help, you let it go at the door. It works.' She looks out at the rain. 'Tonight it did not work. Tonight the door was already closed and the call was still in the room with me. Do you know what that feels like, driver? To carry someone else's emergency home?'",
+      choices:[
+        {t:"'The system works until the one that matters.'", to:'s3b'},
+        {t:"'Then put it down. Right here, right now.'", to:'s3c'} ]},
+    s2c:{ text:"You drive, quiet. After a while she says, 'I did everything right. That is the worst part. Protocol perfect. Forty seconds. The units were rolling before he finished whispering.' She presses her fingers to her temples. 'And I still do not know if he is okay. The call ends and they never tell you. You just go to the next one. Somebody's mother, somebody's crash. You are not supposed to wonder. But I wonder, driver. God, I wonder.'",
+      choices:[
+        {t:"'You are allowed to wonder.'", to:'s3a'},
+        {t:"'The wondering means you are good at this.'", to:'s3c'} ]},
+    s3a:{ text:"'The address,' she says. 'I still have it in my head. I should not. We are not supposed to go back. But what if...' She does not finish. 'Just drive by. Slow. I only want to see the lights on. I only want to see that it is quiet. Then I can sleep. Please, driver. One drive-by and I will never ask for anything again.' Her hands are clenched in her lap.",
+      choices:[
+        {t:"Drive by the address.", to:'end:e_address'} ]},
+    s3b:{ text:"'I could call the station,' she says. 'I am not supposed to. Once the call is closed, it is closed. But I know the night sergeant. He would tell me.' She holds her phone and stares at it. 'Is it weak to need to know? Eight years and I never called back. Not once. Maybe that was the mistake. Maybe you are supposed to need to know.'",
+      choices:[
+        {t:"'Call him.'", to:'end:e_update'},
+        {t:"Drive by instead. See it yourself.", to:'end:e_address'} ]},
+    s3c:{ text:"'Take me home,' she says. 'I have a couch and a blanket and six hours before I do it all again.' She leans her head against the window. 'You know what my mother told me when I took this job? She said, you cannot save everyone, baby. You can only answer. I have been answering for eight years.' She closes her eyes. 'Tonight I am going to try to sleep.'",
+      choices:[
+        {t:"Drive her home.", to:'end:e_home'} ]}
+  },
+  endings:{
+    e_address:{ title:"Lights On", tip:35,
+      text:"The street is quiet. The house is dark except one window upstairs, warm yellow. No police lights. No ambulance. Just a house at 4:30 in the morning with someone awake inside. Imani lets out a breath she has been holding since midnight. 'Okay,' she whispers. 'Okay.' You drive the long way home so she can watch the city be ordinary for a while. She falls asleep before you reach her street, her face soft in the streetlight." },
+    e_update:{ title:"He Is Okay", tip:45,
+      text:"The sergeant answers on the second ring. She gives the call number from memory. There is a pause, a keyboard, and then: 'Units were on scene in three minutes. Boy is fine. Father was removed from the home.' Imani closes her eyes. 'Thank you,' she says, and her voice breaks for the first time all night. 'Thank you.' She hangs up and laughs, wet and real. 'Forty seconds,' she says. 'It was enough.'" },
+    e_home:{ title:"Off Shift", tip:25,
+      text:"You drive her home through the empty streets. She is asleep before you reach her block, head against the window, finally still. You carry her bag to the door and she wakes just enough to smile. 'You are good at this,' she murmurs. 'The quiet driving.' You wait until her porch light goes off. In six hours she will put the headset back on. But that is six hours from now, and the city is silent." }
+  }
+},
+{
+  id:'reyes', name:'Reyes', pickup:'The Williams Bridge, northbound shoulder, 2:05 AM',
+  hook:'Another cab driver whose cab died on the bridge. He grades your driving.',
+  start:'s1',
+  scenes:{
+    s1:{ text:"His cab is on the shoulder of the Williams Bridge with the hazards on and the hood up, steam curling into the rain. He is leaning against it with his arms crossed, watching you pull up. He gets in front, not back. 'Reyes,' he says. 'Twenty-two years driving this bridge. And tonight she quit on me halfway across. The irony is not lost on me, believe me.' He buckles the seatbelt with the care of a man who has told a thousand passengers to do the same.",
+      choices:[
+        {t:"'Rough night to be a driver.'", to:'s2a'},
+        {t:"'What killed her?'", to:'s2b'},
+        {t:"'Where to?'", to:'s2c'} ]},
+    s2a:{ text:"'Easy on the brakes,' he says before you have gone a hundred yards. 'You are riding them. Coast more.' He settles back like a driving instructor. 'Sorry. Occupational hazard. Twenty-two years and I grade everyone. My wife will not let me ride with her anymore.' He grins. 'So far you are a B-minus. The mirror check was good. Do not let it go to your head.' You merge onto the bridge and he nods once, like a judge. 'I once gave a limo driver a D. He argued. I stand by it.'",
+      choices:[
+        {t:"'Grade me honest. No mercy.'", to:'s3a'},
+        {t:"'You are a harsh critic.'", to:'s3b'} ]},
+    s2b:{ text:"'The transmission,' he says. 'It has been whining since October. I kept telling myself one more week, one more fare.' He watches his dead cab shrink in the mirror. 'You know what the repair costs? More than the cab is worth. More than I have.' He is quiet for a moment. 'Twenty-two years and I am done in by a transmission. There is a joke in there somewhere. I am too tired to find it.'",
+      choices:[
+        {t:"'One more fare is how they all go.'", to:'s3b'},
+        {t:"'Maybe she is not done. Maybe she is resting.'", to:'s3c'} ]},
+    s2c:{ text:"You ask where to. He does not answer right away. 'The garage on Fell,' he says finally. 'Or home. My wife is going to kill me either way, so it hardly matters.' He laughs, but it is thin. 'Actually, driver? Just drive for a while. I have been the one driving for twenty-two years. Let me be the passenger for once. Tell me where we are going when we get there.'",
+      choices:[
+        {t:"'The garage can wait. Let us drive.'", to:'s3c'},
+        {t:"'A passenger who grades the driver. Dangerous.'", to:'s3a'} ]},
+    s3a:{ text:"'Okay,' he says, sitting up straighter. 'Here is the deal. You drive like I am not here, and I grade you honest. No mercy.' He mimes a clipboard. 'Lane discipline, braking, passenger comfort, small talk. I am a fair judge but I am not a kind one.' He winks. 'Impress me, driver. Nobody has gotten an A in eleven years.' You pull back onto the bridge and drive the way you never drive when anyone is watching.",
+      choices:[
+        {t:"Drive like nobody is watching.", to:'end:e_grade'} ]},
+    s3b:{ text:"'The garage on Fell,' he says. 'Let us see what the damage is. Maybe it is not the transmission. Maybe it is a belt. Maybe I get lucky once in twenty-two years.' He does not sound like he believes it. 'And if it is the transmission? Then I have a decision to make. Fix her or let her go. She has earned a rest either way.'",
+      choices:[
+        {t:"Drive to the garage.", to:'end:e_garage'},
+        {t:"'The garage can wait. Let us drive.'", to:'end:e_shift'} ]},
+    s3c:{ text:"So you drive. No destination, just the city in the rain. He puts his seat back and watches it go by like a tourist. 'You know what I never do?' he says. 'Look out the window. Twenty-two years and I never once just looked.' The neon smears across the glass. He is quiet for a long time. 'This is nice,' he says, like he is surprised. 'Being the passenger. I should do this more often.'",
+      choices:[
+        {t:"Keep driving.", to:'end:e_shift'} ]}
+  },
+  endings:{
+    e_grade:{ title:"A-Minus", tip:50,
+      text:"You drive the bridge loop twice. He says nothing, which you learn is high praise. At the garage he unbuckles slowly. 'Lane discipline: excellent. Braking: smooth. Small talk: minimal, which I respect.' He pauses. 'A-minus. The minus is for the pothole on Mercer. You saw it late.' He pays double. 'Nobody has gotten an A in eleven years. You were close, kid. You were close.'" },
+    e_garage:{ title:"The Verdict", tip:30,
+      text:"The mechanic at Fell's takes one look and shakes his head. 'Transmission,' he says. 'I can do it for twelve hundred.' Reyes does the math on his face and you watch him decide. 'Do it,' he says. 'She has got another hundred thousand in her.' He pays the deposit with a credit card that looks tired. At dawn he will be back on the bridge. Some men and their cabs. You do not separate them." },
+    e_shift:{ title:"Shotgun", tip:20,
+      text:"You drive until the sky starts going gray at the edges. He falls asleep somewhere around 5 AM, head against the window, finally not grading anything. You finish your own fares with him riding shotgun, a second driver who forgot how to be a passenger and remembered just in time. At the depot you wake him gently. 'Best shift I never drove,' he says." }
+  }
 }
 ];
 /* ============ game flow ============ */
@@ -467,7 +901,7 @@ function refreshTitle(){
   $('t-nights').textContent = store.nights();
   var e = store.endings(), n = 0;
   STORY.forEach(function(p){ n += (e[p.id]||[]).length; });
-  $('t-endings').textContent = n + ' / 15';
+  $('t-endings').textContent = n + ' / 45';
 }
 
 function startNight(){
