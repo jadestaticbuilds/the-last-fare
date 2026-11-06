@@ -23,8 +23,8 @@ html,body{margin:0;padding:0;}
 body{
   background:var(--bg); color:var(--ink);
   font-family:Georgia,'Times New Roman',serif;
-  min-height:100dvh; display:flex; flex-direction:column; align-items:center;
-  padding:0 0 48px;
+  min-height:100vh; min-height:100dvh; display:flex; flex-direction:column; align-items:center;
+  padding:0 0 calc(48px + env(safe-area-inset-bottom));
 }
 /* rain streaks, CSS only */
 .rainfx{position:fixed; inset:0; pointer-events:none; z-index:0; opacity:.5;
